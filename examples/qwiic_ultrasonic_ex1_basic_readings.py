@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 #-------------------------------------------------------------------------------
-# qwiic_template_ex1_title.py TODO: replace template and title
+# qwiic_ultrasonic_ex1_basic_readings.py
 #
-# TODO: Add description for this example
+# Demosntrates how to get basic measurements with the Qwiic Ultrasonic Sensor
 #-------------------------------------------------------------------------------
-# Written by SparkFun Electronics, TODO: month and year
+# Written by SparkFun Electronics, December 2023
 #
 # This python library supports the SparkFun Electroncis Qwiic ecosystem
 #
@@ -33,26 +33,43 @@
 # SOFTWARE.
 #===============================================================================
 
-import qwiic_template # TODO Import correct package
+import qwiic_ultrasonic
 import sys
+import time
+
+# Here we set the device address. Note that an older version of the Qwiic
+# Ultrasonic firmware used a default address of 0x00. If yours uses 0x00,
+# you'll need to change the address below. It is also recommended to run
+# Example 2 to change the address to the new default.
+deviceAddress = qwiic_ultrasonic.QwiicUltrasonic.kDefaultAddress
+# deviceAddress = 0x00
 
 def runExample():
-	# TODO Replace template and title
-	print("\nQwiic Template Example 1 - Title\n")
+	print("\nQwiic Ultrasonic Example 1 - Basic Readings\n")
 
 	# Create instance of device
-	myDevice = qwiic_template.QwiicTemplate() # TODO update as needed
+	my_ultrasonic = qwiic_ultrasonic.QwiicUltrasonic(address=deviceAddress)
 
 	# Check if it's connected
-	if myDevice.is_connected() == False:
+	if my_ultrasonic.is_connected() == False:
 		print("The device isn't connected to the system. Please check your connection", \
 			file=sys.stderr)
 		return
 
 	# Initialize the device
-	myDevice.begin()
+	my_ultrasonic.begin()
 
-	# TODO Add basic example code
+	# Loop forever
+	while True:
+		# Get measurement from sensor. Note that the measured distance actually
+		# comes from the previous trigger, so measurements will be slightly delayed
+		distance = my_ultrasonic.trigger_and_read()
+
+		# Print measurement
+		print("Distance (mm):", distance)
+
+		# Wait a bit
+		time.sleep(0.1)
 
 if __name__ == '__main__':
 	try:

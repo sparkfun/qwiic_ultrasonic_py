@@ -1,10 +1,10 @@
 #-------------------------------------------------------------------------------
-# qwiic_template.py TODO: replace template
+# qwiic_ultrasonic.py
 #
-# Python library for the SparkFun Qwiic TODO, available here:
-# https://www.sparkfun.com/products/TODO
+# Python library for the SparkFun Qwiic Ultrasonic Sensor, available here:
+# https://www.sparkfun.com/products/17777
 #-------------------------------------------------------------------------------
-# Written by SparkFun Electronics, TODO: month and year
+# Written by SparkFun Electronics, December 2023
 #
 # This python library supports the SparkFun Electroncis Qwiic ecosystem
 #
@@ -32,12 +32,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #===============================================================================
+# This code was generated in part with ChatGPT, created by OpenAI. The code was
+# reviewed and edited by the following human(s):
+#
+# Dryw Wade
+#===============================================================================
 
 """
-qwiic_template TODO: replace template
+qwiic_ultrasonic
 ============
-Python module for the [SparkFun Qwiic TODO](https://www.sparkfun.com/products/TODO)
-This is a port of the existing [Arduino Library](https://github.com/sparkfun/TODO)
+Python module for the [SparkFun Qwiic Ultrasonic Sensor](https://www.sparkfun.com/products/17777)
+This is a port of the existing [Arduino Library](https://github.com/sparkfun/SparkFun_Qwiic_Ultrasonic_Arduino_Library)
 This package can be used with the overall [SparkFun Qwiic Python Package](https://github.com/sparkfun/Qwiic_Py)
 New to Qwiic? Take a look at the entire [SparkFun Qwiic ecosystem](https://www.sparkfun.com/qwiic).
 """
@@ -50,22 +55,29 @@ import qwiic_i2c
 # as class variables, making them avilable without having to create a class
 # instance. This allows higher level logic to rapidly create a index of Qwiic
 # devices at runtine
-_DEFAULT_NAME = "Qwiic Template" # TODO: replace template
+_DEFAULT_NAME = "Qwiic Ultrasonic"
 
 # Some devices have multiple available addresses - this is a list of these
 # addresses. NOTE: The first address in this list is considered the default I2C
 # address for the device.
-_AVAILABLE_I2C_ADDRESS = [0x00, 0x01, 0x02] # TODO: set addresses
+_AVAILABLE_I2C_ADDRESS = [0x2F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
+                          0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E]
 
 # Define the class that encapsulates the device being created. All information
 # associated with this device is encapsulated by this class. The device class
 # should be the only value exported from this module.
-class QwiicTemplate(object): # TODO: replace template
+class QwiicUltrasonic(object):
     # Set default name and I2C address(es)
     device_name         = _DEFAULT_NAME
     available_addresses = _AVAILABLE_I2C_ADDRESS
 
-    # TODO: Define constants here
+    # Range of available I2C addresses of the Qwiic Ultrasonic
+    kMinAddress = 0x20
+    kMaxAddress = 0x2F
+    kDefaultAddress = 0x2F
+
+    # Register to trigger a new measurement and read the previous one
+    kRegisterTrigger = 0x01
 
     def __init__(self, address=None, i2c_driver=None):
         """
@@ -91,8 +103,6 @@ class QwiicTemplate(object): # TODO: replace template
         else:
             self._i2c = i2c_driver
 
-        # TODO: Initialize any variables used by this driver
-
     def is_connected(self):
         """
         Determines if this device is connected
@@ -101,9 +111,7 @@ class QwiicTemplate(object): # TODO: replace template
         :rtype: bool
         """
         # Check if connected by seeing if an ACK is received
-        # TODO: If the device has a product ID register, that should be
-        # checked in addition to the ACK
-        return qwiic_i2c.isDeviceConnected(self.address)
+        return self._i2c.isDeviceConnected(self.address)
 
     connected = property(is_connected)
 
@@ -118,13 +126,49 @@ class QwiicTemplate(object): # TODO: replace template
         if not self.is_connected():
             return False
 
-        # TODO Perform a reset of the device if possible. This reverts all
-        # registers to a known state in case the device was reconfigured before
+        # Nothing else to do
+        return True
 
-        # TODO: Configure device as needed. Once complete, the device should be
-        # fully ready to use to make it very simple for the user
+    def trigger_and_read(self):
+        """
+        Triggers a new measurement and reads the previous one
 
-        # TODO: Return True once successful. Template defaults to False!
-        return False
+        :return: Distance in mm
+        :rtype: int
+        """
+        raw_data = self._i2c.readBlock(self.address, self.kRegisterTrigger, 2)
+        return (raw_data[0] << 8) | raw_data[1]
 
-    # TODO: Add features for this device
+    def change_address(self, address):
+        """
+        Changes the I2C address of the Qwiic Ultrasonic sensor
+
+        :param address: New address, must be in the range 0x20 to 0x2F
+        :type address: int
+        :return: Returns `True` if successful, otherwise `False`
+        :rtype: bool
+        """
+        # Check whether the address is valid
+        if address < self.kMinAddress or address > self.kMaxAddress:
+            return False
+
+        # The first bit of the address must be set to 1
+        address |= 0x80
+
+        # Write the new address to the device
+        self._i2c.writeCommand(self.address, address)
+
+        # Update the address of this object
+        self.address = address
+
+        # Done!
+        return True
+
+    def get_address(self):
+        """
+        Gets the current I2C address of the Qwiic Ultrasonic sensor
+
+        :return: The current I2C address, 7-bit unshifted
+        :rtype: int
+        """
+        return self.address
