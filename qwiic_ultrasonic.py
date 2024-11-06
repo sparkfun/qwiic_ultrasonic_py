@@ -61,7 +61,8 @@ _DEFAULT_NAME = "Qwiic Ultrasonic"
 # addresses. NOTE: The first address in this list is considered the default I2C
 # address for the device.
 _AVAILABLE_I2C_ADDRESS = [0x2F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26,
-                          0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E]
+                          0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 
+                          0x00] # 0x00 for old versions of the sensor (SEN-17777)
 
 # Define the class that encapsulates the device being created. All information
 # associated with this device is encapsulated by this class. The device class
