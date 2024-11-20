@@ -140,9 +140,10 @@ class QwiicUltrasonic(object):
         :return: Distance in mm
         :rtype: int
         """
+        self._i2c.writeCommand(self.address, self.kRegisterTrigger)
         raw_data = self._i2c.readBlock(self.address, self.kRegisterTrigger, 2)
         return (raw_data[0] << 8) | raw_data[1]
-
+    
     def change_address(self, address):
         """
         Changes the I2C address of the Qwiic Ultrasonic sensor
