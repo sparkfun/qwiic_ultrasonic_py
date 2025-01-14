@@ -38,7 +38,7 @@
 # Dryw Wade
 #===============================================================================
 
-"""
+"""!
 qwiic_ultrasonic
 ============
 Python module for the [SparkFun Qwiic Ultrasonic Sensor](https://www.sparkfun.com/products/17777)
@@ -81,15 +81,13 @@ class QwiicUltrasonic(object):
     kRegisterTrigger = 0x01
 
     def __init__(self, address=None, i2c_driver=None):
-        """
+        """!
         Constructor
 
-        :param address: The I2C address to use for the device
+        @param int, optional address: The I2C address to use for the device
             If not provided, the default address is used
-        :type address: int, optional
-        :param i2c_driver: An existing i2c driver object
+        @param I2CDriver, optional i2c_driver: An existing i2c driver object
             If not provided, a driver object is created
-        :type i2c_driver: I2CDriver, optional
         """
 
         # Use address if provided, otherwise pick the default
@@ -108,11 +106,10 @@ class QwiicUltrasonic(object):
             self._i2c = i2c_driver
 
     def is_connected(self):
-        """
+        """!
         Determines if this device is connected
 
-        :return: `True` if connected, otherwise `False`
-        :rtype: bool
+        @return **bool** `True` if connected, otherwise `False`
         """
         # Check if connected by seeing if an ACK is received
         return self._i2c.isDeviceConnected(self.address)
@@ -120,11 +117,10 @@ class QwiicUltrasonic(object):
     connected = property(is_connected)
 
     def begin(self):
-        """
+        """!
         Initializes this device with default parameters
 
-        :return: Returns `True` if successful, otherwise `False`
-        :rtype: bool
+        @return **bool** Returns `True` if successful, otherwise `False`
         """
         # Confirm device is connected before doing anything
         if not self.is_connected():
@@ -134,24 +130,22 @@ class QwiicUltrasonic(object):
         return True
 
     def trigger_and_read(self):
-        """
+        """!
         Triggers a new measurement and reads the previous one
 
-        :return: Distance in mm
-        :rtype: int
+        @return **int** Distance in mm
         """
         self._i2c.writeCommand(self.address, self.kRegisterTrigger)
         raw_data = self._i2c.readBlock(self.address, self.kRegisterTrigger, 2)
         return (raw_data[0] << 8) | raw_data[1]
     
     def change_address(self, address):
-        """
+        """!
         Changes the I2C address of the Qwiic Ultrasonic sensor
 
-        :param address: New address, must be in the range 0x20 to 0x2F
-        :type address: int
-        :return: Returns `True` if successful, otherwise `False`
-        :rtype: bool
+        @param int address: New address, must be in the range 0x20 to 0x2F
+
+        @return **bool** Returns `True` if successful, otherwise `False`
         """
         # Check whether the address is valid
         if address < self.kMinAddress or address > self.kMaxAddress:
@@ -170,10 +164,9 @@ class QwiicUltrasonic(object):
         return True
 
     def get_address(self):
-        """
+        """!
         Gets the current I2C address of the Qwiic Ultrasonic sensor
 
-        :return: The current I2C address, 7-bit unshifted
-        :rtype: int
+        @return **int** The current I2C address, 7-bit unshifted
         """
         return self.address
