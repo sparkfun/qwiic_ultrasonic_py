@@ -4,9 +4,7 @@ Below is a brief summary of each of the example programs included in this reposi
 ## Example 1: Basic Readings
 This example demonstrates basic bringup of the Qwiic Ultrasonic HC-SR04 to to print distance measurements (in mm) every tenth of a second.
 
-The key methods showcased by this example is  
-
-- [trigger_and_read()](https://docs.sparkfun.com/qwiic_ultrasonic_py/classqwiic__ultrasonic_1_1_qwiic_ultrasonic.html#a3ab08f0d5ed5b2b1c34bcee954927e6b)
+The key method showcased by this example is [trigger_and_read()](https://docs.sparkfun.com/qwiic_ultrasonic_py/classqwiic__ultrasonic_1_1_qwiic_ultrasonic.html#a3ab08f0d5ed5b2b1c34bcee954927e6b)
 
 ## Example 2: Change I2C Address
 This example demonstrates how to change the I2C address on the Qwiic Ultrasonic HC-SR04. The user is prompted for a new I2C address in the legal range 0x20 to 0x2F. Then, the address of the sensor is changed to the user's selection. 
