@@ -1,9 +1,7 @@
 {
     "urls": [
-      ["qwiic_ultrasonic.py", "github:sparkfun/Qwiic_Ultrasonic_Py/qwiic_ultrasonic.py"]
-    ],
-    "deps": [
-      ["github:sparkfun/Qwiic_I2C_Py", "master"]
+      ["qwiic_ultrasonic_py_examples/qwiic_ultrasonic_ex1_basic_readings.py", "github:sparkfun/qwiic_ultrasonic_py/examples/qwiic_ultrasonic_ex1_basic_readings.py"],
+      ["qwiic_ultrasonic_py_examples/qwiic_ultrasonic_ex2_change_address.py", "github:sparkfun/qwiic_ultrasonic_py/examples/qwiic_ultrasonic_ex2_change_address.py"]
     ],
     "version": "0.9.1"
 }
