@@ -107,7 +107,7 @@ Example Use
  ---------------
 Below is a quickstart program to print distance measurements (in mm) every tenth of a second.
 
-See the examples directory for more detailed use examples and [examples/README.md](https://github.com/sparkfun/qwiic_ultrasonic_py/blob/main/examples/README.md) for a summary of the available examples.
+See the examples directory for more detailed use examples and [examples/README.md](https://github.com/sparkfun/qwiic_ultrasonic_py/blob/master/examples/README.md) for a summary of the available examples.
 
 ```python
 import qwiic_ultrasonic
