@@ -1,4 +1,4 @@
-Qwiic <Example Package Title>
+Qwiic Ultrasonic Python Package
 =============================================
 
-This is a short description of this package.
+This is the Python package for the SparkFun Qwiic Ultrasonic.
